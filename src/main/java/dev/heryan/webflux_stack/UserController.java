@@ -2,7 +2,6 @@ package dev.heryan.webflux_stack;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -21,7 +20,7 @@ public class UserController {
         return new Date().toString();
     }
 
-    @PostMapping("user")
+    @PostMapping("/user")
     Mono<User> saveUser(@RequestBody SaveUserWebRequest saveUserWebRequest) {
         log.info("Saving user {}", saveUserWebRequest);
         return userRepository.save(User.builder()

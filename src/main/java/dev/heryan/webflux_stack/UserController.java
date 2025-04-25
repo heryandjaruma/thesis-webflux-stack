@@ -37,8 +37,12 @@ public class UserController {
     }
 
     @GetMapping("/users")
-    Flux<User> getUsers(@RequestParam long take) {
+    Flux<User> getUsers(@RequestParam(defaultValue = "-1") long take) {
         log.info("Getting all users");
+        if (take == -1) {
+            return userRepository.findAll()
+                    .doOnError(throwable -> log.error(throwable.getMessage(), throwable));
+        }
         return userRepository.findAll()
                 .take(take)
                 .doOnError(throwable -> log.error(throwable.getMessage(), throwable));
@@ -55,7 +59,8 @@ public class UserController {
     @PutMapping("/user")
     Mono<User> updateUser(@RequestBody SaveUserWebRequest saveUserWebRequest) {
         log.info("Updating user {}", saveUserWebRequest);
-        return userRepository.save(User.builder()
+        return userRepository
+                .save(User.builder()
                         .id(saveUserWebRequest.getId())
                         .username(saveUserWebRequest.getUsername())
                         .name(saveUserWebRequest.getName())

@@ -1,4 +1,4 @@
-package dev.heryan.webflux_stack;
+package dev.heryan.webflux_stack.Model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -1,12 +1,12 @@
-package dev.heryan.webflux_stack;
+package dev.heryan.webflux_stack.Controller;
 
+import dev.heryan.webflux_stack.Model.User;
+import dev.heryan.webflux_stack.Repository.UserRepository;
+import dev.heryan.webflux_stack.WebRequest.SaveUserWebRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-
-import java.util.Date;
 
 @Slf4j
 @RestController
@@ -14,11 +14,6 @@ public class UserController {
 
     @Autowired
     UserRepository userRepository;
-
-    @GetMapping
-    String helloWorld() {
-        return new Date().toString();
-    }
 
     @PostMapping("/user")
     Mono<User> saveUser(@RequestBody SaveUserWebRequest saveUserWebRequest) {
@@ -34,18 +29,6 @@ public class UserController {
                         .build())
                 .doOnError(throwable -> log.error(throwable.getMessage(), throwable))
                 .doOnSuccess(u -> log.info("User saved: {}", u));
-    }
-
-    @GetMapping("/users")
-    Flux<User> getUsers(@RequestParam(defaultValue = "-1") long take) {
-        log.info("Getting all users");
-        if (take == -1) {
-            return userRepository.findAll()
-                    .doOnError(throwable -> log.error(throwable.getMessage(), throwable));
-        }
-        return userRepository.findAll()
-                .take(take)
-                .doOnError(throwable -> log.error(throwable.getMessage(), throwable));
     }
 
     @GetMapping("/user")

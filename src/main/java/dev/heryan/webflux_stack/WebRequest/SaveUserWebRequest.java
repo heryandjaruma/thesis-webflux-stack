@@ -1,4 +1,4 @@
-package dev.heryan.webflux_stack;
+package dev.heryan.webflux_stack.WebRequest;
 
 import lombok.Builder;
 import lombok.Data;

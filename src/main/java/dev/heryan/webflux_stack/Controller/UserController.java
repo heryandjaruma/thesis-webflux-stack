@@ -31,8 +31,8 @@ public class UserController {
                 .doOnSuccess(u -> log.info("User saved: {}", u));
     }
 
-    @GetMapping("/user")
-    Mono<User> getUser(@RequestParam String id) {
+    @GetMapping("/user/{id}")
+    Mono<User> getUser(@PathVariable String id) {
         log.info("Getting user {}", id);
         return userRepository.findById(id)
                 .doOnError(throwable -> log.error(throwable.getMessage(), throwable))
@@ -64,11 +64,11 @@ public class UserController {
                 .doOnSuccess(u -> log.info("Users deleted"));
     }
 
-    @DeleteMapping("/user")
-    Mono<Void> deleteUser(@RequestParam String id) {
+    @DeleteMapping("/user/{id}")
+    Mono<Void> deleteUser(@PathVariable String id) {
         log.info("Deleting user {}", id);
         return userRepository.deleteById(id)
                 .doOnError(throwable -> log.error(throwable.getMessage(), throwable))
-                .doOnSuccess(u -> log.info("User deleted: {}", u));
+                .doOnSuccess(u -> log.info("User {} deleted", id));
     }
 }

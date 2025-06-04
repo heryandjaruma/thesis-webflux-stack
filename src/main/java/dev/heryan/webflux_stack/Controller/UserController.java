@@ -56,14 +56,6 @@ public class UserController {
                 .doOnSuccess(u -> log.info("User updated: {}", u));
     }
 
-    @DeleteMapping("/users")
-    Mono<Void> deleteUsers() {
-        log.info("Deleting all users");
-        return userRepository.deleteAll()
-                .doOnError(throwable -> log.error(throwable.getMessage(), throwable))
-                .doOnSuccess(u -> log.info("Users deleted"));
-    }
-
     @DeleteMapping("/user/{id}")
     Mono<Void> deleteUser(@PathVariable String id) {
         log.info("Deleting user {}", id);
